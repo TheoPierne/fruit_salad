@@ -42,9 +42,27 @@ class FruitDetailsScreen extends StatelessWidget {
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: Text(
-                            'Tarif à l\'unité ${cart.selectedFruit.price}€'),
+                            'Origine: ${cart.selectedFruit.origin['name']}'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text('Saison: ${cart.selectedFruit.season}'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text('Stock: ${cart.selectedFruit.stock}'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                            'Tarif à l\'unité: ${cart.selectedFruit.price}€'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                            'Quantité sélectionnée: ${cart.list[cart.selectedFruit.name] ?? 0}'),
                       ),
                     ],
                   ),
@@ -101,7 +119,7 @@ class FruitDetailsScreen extends StatelessWidget {
                               ),
                             );
                           },
-                          icon: const Icon(Icons.add_shopping_cart),
+                          icon: const Icon(Icons.close),
                         ),
                       ),
                     ],
@@ -115,9 +133,11 @@ class FruitDetailsScreen extends StatelessWidget {
                   child: FlutterMap(
                     options: MapOptions(
                       center: LatLng(
-                          double.parse(cart.selectedFruit.coordinates[1]
+                          double.parse(cart.selectedFruit
+                              .origin['location']['coordinates'][1]
                               .toStringAsFixed(6)),
-                          double.parse(cart.selectedFruit.coordinates[0]
+                          double.parse(cart.selectedFruit
+                              .origin['location']['coordinates'][0]
                               .toStringAsFixed(6))),
                       zoom: 13.0,
                     ),
@@ -137,9 +157,11 @@ class FruitDetailsScreen extends StatelessWidget {
                         markers: [
                           Marker(
                             point: LatLng(
-                                double.parse(cart.selectedFruit.coordinates[1]
+                                double.parse(cart.selectedFruit
+                                    .origin['location']['coordinates'][1]
                                     .toStringAsFixed(6)),
-                                double.parse(cart.selectedFruit.coordinates[0]
+                                double.parse(cart.selectedFruit
+                                    .origin['location']['coordinates'][0]
                                     .toStringAsFixed(6))),
                             width: 40,
                             height: 40,
