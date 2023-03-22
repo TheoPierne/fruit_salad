@@ -163,13 +163,25 @@ class FruitDetailsScreen extends StatelessWidget {
                                 double.parse(cart.selectedFruit
                                     .origin['location']['coordinates'][0]
                                     .toStringAsFixed(6))),
-                            width: 40,
-                            height: 40,
-                            builder: (context) => const Image(
-                                image: AssetImage('assets/images/marker.png')),
+                            width: 60,
+                            height: 60,
+                            builder: (context) => Column(
+                              children: [
+                                const Image(
+                                  width: 40,
+                                  height: 40,
+                                  image: AssetImage('assets/images/marker.png'),
+                                ),
+                                Text(
+                                  "${cart.selectedFruit.origin['name']}",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
