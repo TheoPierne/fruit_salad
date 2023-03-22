@@ -56,6 +56,11 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  UnmodifiableListView<Fruit> getListOfFruitBySeason(String season) {
+    if (season == 'Tout') return UnmodifiableListView(_fruitList);
+    return UnmodifiableListView(_fruitList.where((e) => e.season == season));
+  }
+
   void add(Fruit fruit) {
     if (_cart.containsKey(fruit.name)) {
       _cart[fruit.name] = _cart[fruit.name]! + 1;

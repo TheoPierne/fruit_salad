@@ -52,6 +52,11 @@ class FruitsMaster extends StatefulWidget {
 }
 
 class _FruitsMasterState extends State<FruitsMaster> {
+  final List<String> filters = ['Tout', 'Printemps', 'Eté', 'Automne', 'Hiver'];
+  late String currentFilter = filters.first;
+
+  void updateListView(String filter) {}
+
   @override
   Widget build(BuildContext context) {
     var cart = context.watch<CartProvider>();
@@ -63,23 +68,42 @@ class _FruitsMasterState extends State<FruitsMaster> {
             widget.title.replaceAll('<N>', cart.totalPrice.toStringAsFixed(2))),
         automaticallyImplyLeading: false,
         actions: [
-          Visibility(
-            visible: true,
-            child: IconButton(
-              icon: const Icon(Icons.shopping_cart),
-              tooltip: 'Panier',
-              onPressed: () {
-                Navigator.pushNamed(context, '/cart');
-              },
+          DropdownButton<String>(
+            value: currentFilter,
+            icon: const Icon(Icons.menu),
+            elevation: 16,
+            style: const TextStyle(color: Colors.deepPurple),
+            underline: Container(
+              height: 2,
+              color: Colors.deepPurpleAccent,
             ),
+            onChanged: (String? value) {
+              setState(() {
+                currentFilter = value!;
+              });
+              updateListView(value!);
+            },
+            items: filters.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            tooltip: 'Panier',
+            onPressed: () {
+              Navigator.pushNamed(context, '/cart');
+            },
           ),
         ],
       ),
       body: ListView.builder(
-        itemCount: cart.fruitsList.length,
+        itemCount: cart.getListOfFruitBySeason(currentFilter).length,
         itemBuilder: (context, index) {
           return FruitPreview(
-            fruit: cart.fruitsList[index],
+            fruit: cart.getListOfFruitBySeason(currentFilter)[index],
           );
         },
       ),
