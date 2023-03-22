@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:fruit_salad/providers/CartProvider.dart';
+import 'package:fruit_salad/screens/quantityBadge.dart';
 import 'package:provider/provider.dart';
 
 class FruitDetailsScreen extends StatelessWidget {
@@ -61,8 +62,14 @@ class FruitDetailsScreen extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                            'Quantité sélectionnée: ${cart.list[cart.selectedFruit.name] ?? 0}'),
+                        child: Row(
+                          children: [
+                            const Text('Quantité sélectionnée:  '),
+                            QuantityBadge(
+                              selectedFruit: cart.selectedFruit,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
