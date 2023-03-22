@@ -14,7 +14,6 @@ class FruitPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cart = context.watch<CartProvider>();
     return ListTile(
       title: Text(fruit.name),
       tileColor: fruit.color,
