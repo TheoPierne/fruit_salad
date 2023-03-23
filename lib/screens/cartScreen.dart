@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fruit_salad/providers/CartProvider.dart';
+import 'package:fruit_salad/providers/UserProvider.dart';
 import 'package:fruit_salad/screens/loginHandler.dart';
+import 'package:fruit_salad/user.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
@@ -11,6 +13,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cart = context.watch<CartProvider>();
+    var userProvider = context.watch<UserProvider>();
 
     return Scaffold(
         appBar: AppBar(
@@ -60,6 +63,33 @@ class CartScreen extends StatelessWidget {
                           ),
                         );
                       },
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          await Provider.of<CartProvider>(context,
+                                  listen: false)
+                              .passCommand(userProvider.currentUser!);
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Commande effectuée !')),
+                          );
+                          // ignore: use_build_context_synchronously
+                          Provider.of<CartProvider>(context, listen: false)
+                              .removeAll();
+                        } catch (exception) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Une erreur est survenue lors du passage de la commande.')),
+                          );
+                        }
+                      },
+                      child: const Text('Passer une commande'),
                     ),
                   ),
                   const Align(

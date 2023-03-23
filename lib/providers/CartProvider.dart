@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fruit_salad/fruit.dart';
+import 'package:fruit_salad/user.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -29,6 +30,29 @@ class CartProvider extends ChangeNotifier {
       notifyListeners();
     } else {
       throw Exception('Failed to load fruit list');
+    }
+  }
+
+  Future<void> passCommand(User user) async {
+    final response = await http.post(
+      Uri.parse(
+          'https://fruits.shrp.dev/items/orders?access_token=${user.token['access_token']}'),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${user.token['access_token']}',
+      },
+      body: jsonEncode({
+        'customer_id': user.id,
+        'amount': 1,
+        'fruits': _cart.keys
+            .map((key) =>
+                _fruitList.firstWhere((element) => element.name == key).id)
+            .toList(),
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('An error occured');
     }
   }
 
